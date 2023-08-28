@@ -1,7 +1,7 @@
 version: "3.1"
 services:
     db:
-        container_name: mobydq-db
+        container_name: mobydq-db-new
         restart: always
         image: mobydq-db
         build:
@@ -12,7 +12,7 @@ services:
             - ./.env
 
     graphql:
-        container_name: mobydq-graphql
+        container_name: mobydq-graphql-new
         restart: always
         image: mobydq-graphql
         build:
@@ -25,7 +25,7 @@ services:
             - db
 
     app:
-        container_name: mobydq-app
+        container_name: mobydq-app-new
         restart: always
         image: mobydq-app
         build:
@@ -37,7 +37,7 @@ services:
         command: ["prod"]
 
     nginx:
-        container_name: mobydq-nginx
+        container_name: mobydq-nginx-new
         restart: always
         image: nginx:alpine
         volumes:
@@ -51,7 +51,7 @@ services:
             - graphql
 
     scripts:
-        container_name: mobydq-scripts
+        container_name: mobydq-scripts-new
         restart: always
         image: mobydq-scripts
         build:
@@ -70,6 +70,6 @@ services:
 networks:
     default:
         name: mobydq_network
-
+        external: true
 volumes:
     db:

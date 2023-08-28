@@ -1,4 +1,4 @@
-FROM python:3.6.6-slim-stretch
+FROM python:3.9-buster
 
 # Project files
 ARG PROJECT_DIR=/srv/scripts
@@ -28,26 +28,30 @@ RUN apt-get install -y tdsodbc
 RUN dpkg -i ./drivers/hive-odbc-native_2.6.1.1001-2_amd64.deb
 
 # Install MySQL ODBC driver
+
+
+RUN mkdir -p /usr/lib/x86_64-linux-gnu/odbc/
+
 RUN tar xvzf ./drivers/mysql-connector-odbc-8.0.12-linux-debian9-x86-64bit.tar.gz \
-    && cp ./mysql-connector-odbc-8.0.12-linux-debian9-x86-64bit/lib/libmyodbc8* /usr/lib/x86_64-linux-gnu/odbc/ \
+    && cp ./mysql-connector-odbc-8.0.12-linux-debian9-x86-64bit/lib/libmyodbc8* /usr/lib/x86_64-linux-gnu/odbc/  \
     && rm -R ./mysql-connector-odbc-8.0.12-linux-debian9-x86-64bit
 
 # Install Oracle ODBC driver
-RUN apt-get install -y alien libaio1 \
-    && alien -i ./drivers/oracle-instantclient12.2-*
-ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/oracle/12.2/client64/lib
+#RUN apt-get install -y alien libaio1 \
+#    && alien -i ./drivers/oracle-instantclient12.2-*
+#ENV LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/oracle/12.2/client64/lib
 
 # Add PostgreSQL ODBC driver
 RUN apt-get install -y odbc-postgresql
 
 # Install Snowflake ODBC driver
-RUN dpkg -i ./drivers/snowflake-odbc-2.20.4.x86_64.deb
+#RUN dpkg -i ./drivers/snowflake-odbc-2.20.4.x86_64.deb
 
 # Install Teradata ODBC driver
-RUN apt-get install -y lib32stdc++6 \
-    && tar xvzf ./drivers/tdodbc1620__ubuntu_indep.16.20.00.36-1.tar.gz \
-    && dpkg -i ./tdodbc1620/tdodbc1620-16.20.00.36-1.noarch.deb \
-    && rm -R ./tdodbc1620
+#RUN apt-get install -y lib32stdc++6 \
+ #   && tar xvzf ./drivers/tdodbc1620__ubuntu_indep.16.20.00.36-1.tar.gz \
+  #  && dpkg -i ./tdodbc1620/tdodbc1620-16.20.00.36-1.noarch.deb \
+   # && rm -R ./tdodbc1620
 
 # Move ODBC configuration file
 COPY ./init/odbcinst.ini /etc
